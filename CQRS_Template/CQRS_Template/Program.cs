@@ -26,7 +26,8 @@ app.MapGet("/api/employee", async (EmployeeDbContext context) =>
 
 app.MapGet("/api/employee/{id}", async (EmployeeDbContext context, int id) =>
 {
-    return await context.Employees.FindAsync(id);
+    var employee = await context.Employees.FindAsync(id);
+    return Results.Ok(employee);
 }).WithName("GetEmployeeById");
 
 app.MapPost("/api/employee", async (EmployeeDbContext context, EmployeeModel model) =>
