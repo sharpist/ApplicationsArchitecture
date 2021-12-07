@@ -18,6 +18,6 @@ public class EmployeeQueryHandler :
 
     public async Task<EmployeeModel> Execute(GetEmployeeByIdQuery query)
     {
-        return await repository.ReadAsync(query.EmployeeId);
+        return await repository.FindAsync(query.EmployeeId);
     }
 }

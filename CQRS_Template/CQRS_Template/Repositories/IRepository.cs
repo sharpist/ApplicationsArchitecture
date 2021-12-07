@@ -1,16 +1,16 @@
 ﻿namespace CQRS_Template.Repositories;
 
-public interface IRepository<T>
+public interface IRepository<T> where T : class
 {
-    IQueryable<T> Items { get; }
-
     Task CreateAsync(T entity);
-
-    Task<T> ReadAsync(Int32 id);
 
     Task<IEnumerable<T>> ReadAsync();
 
-    Task Update(T entity);
+    IQueryable<T> Read(System.Linq.Expressions.Expression<Func<T, Boolean>> predicate);
+
+    Task<T> FindAsync(Int32 id);
+
+    Task UpdateAsync(T entity);
 
     Task<T> DeleteAsync(Int32 id);
 
