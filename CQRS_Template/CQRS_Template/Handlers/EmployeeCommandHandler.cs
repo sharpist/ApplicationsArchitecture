@@ -1,18 +1,18 @@
 ﻿namespace CQRS_Template.Handlers;
 
-public class EmployeeCommandHandler : ICommandHandler<PostEmployeeCommand>
+public class EmployeeCommandHandler :
+    ICommandHandler<PostEmployeeCommand>
 {
-    private readonly EmployeeDbContext context;
+    private readonly IRepository<EmployeeModel> repository;
 
-    public EmployeeCommandHandler(EmployeeDbContext context)
+    public EmployeeCommandHandler(IRepository<EmployeeModel> repository)
     {
-        this.context = context;
+        this.repository = repository;
     }
 
     public async Task Execute(PostEmployeeCommand command)
     {
         var employee = new EmployeeModel { Name = command.Name, Department = command.Department };
-        context.Employees.Add(employee);
-        await context.SaveChangesAsync();
+        await repository.CreateAsync(employee);
     }
 }

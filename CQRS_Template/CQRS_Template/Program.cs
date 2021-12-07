@@ -4,11 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCore(builder);
-builder.Services.AddScoped<ICommandHandler<PostEmployeeCommand>, EmployeeCommandHandler>();
-builder.Services.AddScoped<IQueryHandler<GetEmployeesQuery, EmployeeModel[]>, EmployeeQueryHandler>();
-builder.Services.AddScoped<IQueryHandler<GetEmployeeByIdQuery, EmployeeModel>, EmployeeQueryHandler>();
-builder.Services.AddSingleton<ICommandDispatcher, CommandDispatcher>();
-builder.Services.AddSingleton<IQueryDispatcher, QueryDispatcher>();
+builder.Services.AddCQRS();
 
 await using var app = builder.Build();
 

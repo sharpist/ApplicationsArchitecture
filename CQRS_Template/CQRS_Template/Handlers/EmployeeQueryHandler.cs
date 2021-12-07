@@ -4,22 +4,20 @@ public class EmployeeQueryHandler :
     IQueryHandler<GetEmployeesQuery, EmployeeModel[]>,
     IQueryHandler<GetEmployeeByIdQuery, EmployeeModel>
 {
-    private readonly EmployeeDbContext context;
+    private readonly IRepository<EmployeeModel> repository;
 
-    public EmployeeQueryHandler(EmployeeDbContext context)
+    public EmployeeQueryHandler(IRepository<EmployeeModel> repository)
     {
-        this.context = context;
+        this.repository = repository;
     }
 
     public async Task<EmployeeModel[]> Execute(GetEmployeesQuery _)
     {
-        var employees = await context.Employees.ToArrayAsync();
-        return employees;
+        return (EmployeeModel[])await repository.ReadAsync();
     }
 
     public async Task<EmployeeModel> Execute(GetEmployeeByIdQuery query)
     {
-        var employee = await context.Employees.FindAsync(query.EmployeeId);
-        return employee;
+        return await repository.ReadAsync(query.EmployeeId);
     }
 }
