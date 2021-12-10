@@ -24,15 +24,7 @@ public class QueryDispatcher : IQueryDispatcher
 
 public class QueryHandlerNotFoundException : Exception
 {
-    public QueryHandlerNotFoundException()
-    {
-    }
-
-    public QueryHandlerNotFoundException(string message) : base(message)
-    {
-    }
-
-    public QueryHandlerNotFoundException(string message, Exception inner) : base(message, inner)
-    {
-    }
+    public QueryHandlerNotFoundException() : base() { }
+    public QueryHandlerNotFoundException(string message) : base(message) { }
+    public QueryHandlerNotFoundException(string message, Exception inner) : base(message, inner) { }
 }
