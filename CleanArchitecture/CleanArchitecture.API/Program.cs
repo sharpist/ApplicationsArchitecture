@@ -1,43 +1,45 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// add services to the container
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCore();
+builder.Services.AddCQRS();
 
-var app = builder.Build();
+await using var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// configure the HTTP request pipeline
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwagger().UseSwaggerUI();
+    //await app.UseDbInitializerAsync();
 }
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
+// HTTP verbs
+app.MapGet("/api/employee", async (IQueryDispatcher dispatcher) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    var query = new GetEmployeesQuery();
+    var employees = await dispatcher.Execute<GetEmployeesQuery, IEnumerable<ReadEmployeeDTO>>(query);
 
-app.MapGet("/weatherforecast", () =>
+    return Results.Ok(employees);
+}).WithName("GetEmployees");
+
+app.MapGet("/api/employee/{id}", async (IQueryDispatcher dispatcher, int id) =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-       new WeatherForecast
-       (
-           DateTime.Now.AddDays(index),
-           Random.Shared.Next(-20, 55),
-           summaries[Random.Shared.Next(summaries.Length)]
-       ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    var query = new GetEmployeeByIdQuery(id);
+    var employee = await dispatcher.Execute<GetEmployeeByIdQuery, ReadEmployeeDTO>(query);
 
-app.Run();
+    return Results.Ok(employee);
+}).WithName("GetEmployeeById");
 
-internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary)
+app.MapPost("/api/employee", async (ICommandDispatcher dispatcher, [FromBody] CreateEmployeeDTO model) =>
 {
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+    var command = new PostEmployeeCommand(model);
+    await dispatcher.Execute(command);
+
+    return Results.Ok();
+}).WithName("PostEmployee");
+
+await app.RunAsync();
