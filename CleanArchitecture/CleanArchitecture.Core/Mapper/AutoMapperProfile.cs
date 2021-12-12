@@ -15,11 +15,17 @@ public class AutoMapperProfile : Profile
 
         CreateMap<Employee, ReadEmployeeDTO>()
             .ForMember(
+                dest => dest.EmployeeId,
+                opt => opt.MapFrom(src => src.Id))
+            .ForMember(
                 dest => dest.Name,
                 opt => opt.MapFrom(src => src.Name))
             .ForMember(
                 dest => dest.Department,
                 opt => opt.MapFrom(src => src.Department))
+            .ForMember(
+                dest => dest.AddedOn,
+                opt => opt.MapFrom(src => src.AddedOn))
             .ReverseMap();
     }
 }
