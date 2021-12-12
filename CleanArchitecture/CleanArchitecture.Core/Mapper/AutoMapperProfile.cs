@@ -4,21 +4,21 @@ public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
-        CreateMap<Employee, PostEmployeeCommand>()
-            .ForMember(dest =>
-                dest.Model.Name,
+        CreateMap<Employee, CreateEmployeeDTO>()
+            .ForMember(
+                dest => dest.Name,
                 opt => opt.MapFrom(src => src.Name))
-            .ForMember(dest =>
-                dest.Model.Department,
+            .ForMember(
+                dest => dest.Department,
                 opt => opt.MapFrom(src => src.Department))
             .ReverseMap();
 
         CreateMap<Employee, ReadEmployeeDTO>()
-            .ForMember(dest =>
-                dest.Name,
+            .ForMember(
+                dest => dest.Name,
                 opt => opt.MapFrom(src => src.Name))
-            .ForMember(dest =>
-                dest.Department,
+            .ForMember(
+                dest => dest.Department,
                 opt => opt.MapFrom(src => src.Department))
             .ReverseMap();
     }
