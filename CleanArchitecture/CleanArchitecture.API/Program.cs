@@ -5,6 +5,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCore();
 builder.Services.AddCQRS();
+builder.Services.AddStorage(builder.Configuration);
 
 await using var app = builder.Build();
 
@@ -12,7 +13,7 @@ await using var app = builder.Build();
 if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseSwagger().UseSwaggerUI();
-    //await app.UseDbInitializerAsync();
+    await app.UseDbInitializerAsync();
 }
 
 app.UseHttpsRedirection();

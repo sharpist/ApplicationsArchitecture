@@ -1,11 +1,11 @@
-﻿namespace CleanArchitecture.Core.Extensions;
+﻿namespace CleanArchitecture.Infrastructure.Extensions;
 
 public static class ApplicationExtensions
 {
-    public static async Task UseDbInitializerAsync(this IApplicationBuilder builder)
+    public static async Task<IApplicationBuilder> UseDbInitializerAsync(this IApplicationBuilder app)
     {
-        using var scope = builder.ApplicationServices.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<AppDbContext<Employee>>();
+        using var scope = app.ApplicationServices.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<DatabaseContext<Employee>>();
 
         await context.Database.MigrateAsync();
 
@@ -18,5 +18,7 @@ public static class ApplicationExtensions
 
             await context.SaveChangesAsync();
         }
+
+        return app;
     }
 }
