@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Core.Repositories;
+﻿namespace CleanArchitecture.Domain.Repositories;
 
 public interface IRepository<T> where T : class
 {
