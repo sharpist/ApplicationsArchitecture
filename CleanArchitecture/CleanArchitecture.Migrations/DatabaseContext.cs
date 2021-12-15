@@ -15,7 +15,13 @@ public class DatabaseContext<T> : DbContext where T : class
     {
         foreach (var item in ChangeTracker.Entries<BaseEntity>().AsEnumerable())
         {
-            item.Entity.AddedOn = DateTime.Now;
+            if (item.State == EntityState.Added)
+            {
+                item.Entity.Created = DateTime.UtcNow;
+            }
+            else if (item.State == EntityState.Modified)
+            {
+            }
         }
 
         return base.SaveChangesAsync(cancellationToken);

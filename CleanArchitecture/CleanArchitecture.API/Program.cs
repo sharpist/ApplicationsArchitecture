@@ -35,7 +35,7 @@ app.MapGet("/api/employee/{id}", async (IQueryDispatcher dispatcher, int id) =>
     return Results.Ok(employee);
 }).WithName("GetEmployeeById");
 
-app.MapPost("/api/employee", async (ICommandDispatcher dispatcher, [FromBody] CreateEmployeeDTO model) =>
+app.MapPost("/api/employee", async (ICommandDispatcher dispatcher, [FromBody] CreateOrUpdateEmployeeDTO model) =>
 {
     var command = new PostEmployeeCommand(model);
     await dispatcher.Execute(command);

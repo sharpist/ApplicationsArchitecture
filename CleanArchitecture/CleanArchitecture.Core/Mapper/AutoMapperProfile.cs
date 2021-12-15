@@ -4,7 +4,7 @@ public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
-        CreateMap<Employee, CreateEmployeeDTO>()
+        CreateMap<Employee, CreateOrUpdateEmployeeDTO>()
             .ForMember(
                 dest => dest.Name,
                 opt => opt.MapFrom(src => src.Name))
@@ -24,8 +24,8 @@ public class AutoMapperProfile : Profile
                 dest => dest.Department,
                 opt => opt.MapFrom(src => src.Department))
             .ForMember(
-                dest => dest.AddedOn,
-                opt => opt.MapFrom(src => src.AddedOn))
+                dest => dest.Created,
+                opt => opt.MapFrom(src => src.Created))
             .ReverseMap();
     }
 }
