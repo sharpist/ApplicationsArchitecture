@@ -5,6 +5,7 @@ global using CleanArchitecture.Core.Handlers.Commands;
 global using CleanArchitecture.Core.Handlers.Queries;
 global using CleanArchitecture.Domain.DTO;
 global using CleanArchitecture.Domain.Entities;
+global using CleanArchitecture.Domain.Exceptions;
 global using CleanArchitecture.Domain.Repositories;
 global using Microsoft.Extensions.DependencyInjection;
 global using System.Reflection;
