@@ -20,10 +20,10 @@ public class Repository<T> : IRepository<T> where T : class
     public async Task<IEnumerable<T>> ReadAsync() =>
         await dbSet.AsNoTracking().ToArrayAsync();
 
-    public IQueryable<T> Read(System.Linq.Expressions.Expression<Func<T, bool>> predicate) =>
+    public IQueryable<T> Read(Expression<Func<T, bool>> predicate) =>
         dbSet.AsNoTracking().Where(predicate);
 
-    public async Task<T> FindAsync(int id) => await dbSet.FindAsync(id);
+    public async Task<T?> FindAsync(int id) => await dbSet.FindAsync(id);
 
     public async Task UpdateAsync(T entity)
     {
@@ -31,7 +31,7 @@ public class Repository<T> : IRepository<T> where T : class
         await context.SaveChangesAsync();
     }
 
-    public async Task<T> DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
         var entity = await FindAsync(id);
         if (entity is not null)
@@ -39,7 +39,6 @@ public class Repository<T> : IRepository<T> where T : class
             dbSet.Remove(entity);
             await context.SaveChangesAsync();
         }
-        return entity;
     }
 
     public int Count() => dbSet.Count();

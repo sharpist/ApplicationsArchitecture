@@ -8,7 +8,7 @@ public static class ServiceExtensions
         {
             options.UseSqlServer(configuration.GetConnectionString("EmployeeDbConnection"), options =>
             {
-                options.MigrationsAssembly("CleanArchitecture.Migrations");
+                options.MigrationsAssembly("CleanArchitecture.Infrastructure");
             });
         });
     }

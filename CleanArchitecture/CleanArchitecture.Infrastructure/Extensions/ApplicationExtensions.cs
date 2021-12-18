@@ -2,7 +2,7 @@
 
 public static class ApplicationExtensions
 {
-    public static async Task<IApplicationBuilder> UseDbInitializerAsync(this IApplicationBuilder app)
+    public static async Task<IApplicationBuilder> UseDatabaseInitializer(this IApplicationBuilder app)
     {
         using var scope = app.ApplicationServices.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<DatabaseContext<Employee>>();

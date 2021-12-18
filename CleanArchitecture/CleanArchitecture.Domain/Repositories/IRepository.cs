@@ -6,13 +6,13 @@ public interface IRepository<T> where T : class
 
     Task<IEnumerable<T>> ReadAsync();
 
-    IQueryable<T> Read(System.Linq.Expressions.Expression<Func<T, Boolean>> predicate);
+    IQueryable<T> Read(Expression<Func<T, Boolean>> predicate);
 
-    Task<T> FindAsync(Int32 id);
+    Task<T?> FindAsync(Int32 id);
 
     Task UpdateAsync(T entity);
 
-    Task<T> DeleteAsync(Int32 id);
+    Task DeleteAsync(Int32 id);
 
     Int32 Count();
 }

@@ -1,6 +1,6 @@
 ﻿#nullable disable
 
-namespace CleanArchitecture.Migrations.Migrations;
+namespace CleanArchitecture.Infrastructure.Migrations;
 
 public partial class Initial : Migration
 {

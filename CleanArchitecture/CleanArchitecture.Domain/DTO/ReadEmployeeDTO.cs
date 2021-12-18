@@ -2,10 +2,8 @@
 
 namespace CleanArchitecture.Domain.DTO;
 
-public class ReadEmployeeDTO
+public class ReadEmployeeDTO : BaseEntity
 {
-    public Int32    EmployeeId { get; set; }
-    public String   Name       { get; set; }
-    public String   Department { get; set; }
-    public DateTime Created    { get; set; }
+    public String Name       { get; set; }
+    public String Department { get; set; }
 }

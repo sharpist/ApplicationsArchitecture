@@ -1,6 +1,6 @@
 ﻿#nullable disable
 
-namespace CleanArchitecture.Migrations.Migrations;
+namespace CleanArchitecture.Infrastructure.Migrations;
 
 [DbContext(typeof(DatabaseContext<Employee>))]
 [Migration("20211212114644_Initial")]

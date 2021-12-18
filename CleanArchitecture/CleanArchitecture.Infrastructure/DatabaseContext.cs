@@ -1,6 +1,6 @@
 #nullable disable
 
-namespace CleanArchitecture.Migrations;
+namespace CleanArchitecture.Infrastructure;
 
 public class DatabaseContext<T> : DbContext where T : class
 {

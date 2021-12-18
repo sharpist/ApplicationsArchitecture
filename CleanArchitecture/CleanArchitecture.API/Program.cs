@@ -12,8 +12,7 @@ await using var app = builder.Build();
 // configure the HTTP request pipeline
 if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
-    app.UseSwagger().UseSwaggerUI();
-    await app.UseDbInitializerAsync();
+    await app.UseSwagger().UseSwaggerUI().UseDatabaseInitializer();
 }
 
 app.UseHttpsRedirection();
