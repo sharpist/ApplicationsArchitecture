@@ -11,7 +11,7 @@ public class DatabaseContext<T> : DbContext where T : class
         ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
     {
         foreach (var item in ChangeTracker.Entries<BaseEntity>().AsEnumerable())
         {
