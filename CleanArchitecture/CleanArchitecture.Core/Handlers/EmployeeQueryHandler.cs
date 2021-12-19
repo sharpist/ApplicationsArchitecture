@@ -13,15 +13,15 @@ public class EmployeeQueryHandler :
         this.mapper = mapper;
     }
 
-    public async Task<IEnumerable<ReadEmployeeDTO>> Execute(GetEmployeesQuery _)
+    public async Task<IEnumerable<ReadEmployeeDTO>> Execute(GetEmployeesQuery _, CancellationToken cancellationToken = default)
     {
-        var employees = await repository.ReadAsync();
+        var employees = await repository.ReadAsync(cancellationToken);
         return mapper.Map<IEnumerable<ReadEmployeeDTO>>(employees);
     }
 
-    public async Task<ReadEmployeeDTO> Execute(GetEmployeeByIdQuery query)
+    public async Task<ReadEmployeeDTO> Execute(GetEmployeeByIdQuery query, CancellationToken cancellationToken = default)
     {
-        var employee = await repository.FindAsync(query.Id);
+        var employee = await repository.FindAsync(query.Id, cancellationToken);
         return mapper.Map<ReadEmployeeDTO>(employee);
     }
 }

@@ -18,18 +18,18 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 app.UseHttpsRedirection();
 
 // HTTP verbs
-app.MapGet("/api/employee", async (IQueryDispatcher dispatcher) =>
+app.MapGet("/api/employee", async (IQueryDispatcher dispatcher, CancellationToken cancellationToken) =>
 {
     var query = new GetEmployeesQuery();
-    var employees = await dispatcher.Execute<GetEmployeesQuery, IEnumerable<ReadEmployeeDTO>>(query);
+    var employees = await dispatcher.Execute<GetEmployeesQuery, IEnumerable<ReadEmployeeDTO>>(query, cancellationToken);
 
     return Results.Ok(employees);
 }).WithName("GetEmployees");
 
-app.MapGet("/api/employee/{id}", async (IQueryDispatcher dispatcher, int id) =>
+app.MapGet("/api/employee/{id}", async (IQueryDispatcher dispatcher, int id, CancellationToken cancellationToken) =>
 {
     var query = new GetEmployeeByIdQuery(id);
-    var employee = await dispatcher.Execute<GetEmployeeByIdQuery, ReadEmployeeDTO>(query);
+    var employee = await dispatcher.Execute<GetEmployeeByIdQuery, ReadEmployeeDTO>(query, cancellationToken);
 
     return Results.Ok(employee);
 }).WithName("GetEmployeeById");
