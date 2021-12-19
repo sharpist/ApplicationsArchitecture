@@ -26,7 +26,7 @@ app.MapGet("/api/employee", async (IQueryDispatcher dispatcher, CancellationToke
     return Results.Ok(employees);
 }).WithName("GetEmployees");
 
-app.MapGet("/api/employee/{id}", async (IQueryDispatcher dispatcher, int id, CancellationToken cancellationToken) =>
+app.MapGet("/api/employee/{id}", async (IQueryDispatcher dispatcher, [FromQuery] int id, CancellationToken cancellationToken) =>
 {
     var query = new GetEmployeeByIdQuery(id);
     var employee = await dispatcher.Execute<GetEmployeeByIdQuery, ReadEmployeeDTO>(query, cancellationToken);
