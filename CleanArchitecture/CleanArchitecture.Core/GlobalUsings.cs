@@ -8,4 +8,5 @@ global using CleanArchitecture.Domain.Entities;
 global using CleanArchitecture.Domain.Exceptions;
 global using CleanArchitecture.Domain.Repositories;
 global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.DependencyInjection.Extensions;
 global using System.Reflection;
