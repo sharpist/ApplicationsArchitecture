@@ -28,14 +28,15 @@ public static class ServiceExtensions
                 .SelectMany(a => a.DefinedTypes)
                 .ToArray();
 
-            foreach (var type in types
+            foreach (var implementationType in types
                 .SelectMany(openType => allTypes
                 .Where(t => t.IsClass && !t.IsAbstract && t.AsType().ImplementsGenericInterface(openType))))
             {
-                Array.ForEach(type.ImplementedInterfaces.ToArray(), @interface =>
-                    services.TryAdd(new ServiceDescriptor(@interface, type.AsType(), lifetime)));
+                Array.ForEach(implementationType.ImplementedInterfaces.ToArray(), @interface =>
+                    services.TryAdd(new ServiceDescriptor(@interface, implementationType, lifetime)));
             }
         }
+
         return services;
     }
 
