@@ -21,17 +21,17 @@ app.UseHttpsRedirection();
 app.MapGet("/api/employee", async (IQueryDispatcher dispatcher, CancellationToken cancellationToken) =>
 {
     var query = new GetEmployeesQuery();
-    var employees = await dispatcher.Execute<GetEmployeesQuery, IEnumerable<ReadEmployeeDTO>>(query, cancellationToken);
+    var response = await dispatcher.Execute<GetEmployeesQuery, IEnumerable<ReadEmployeeDTO>>(query, cancellationToken);
 
-    return Results.Ok(employees);
+    return Results.Ok(response);
 }).WithName("GetEmployees");
 
 app.MapGet("/api/employee/{id}", async (IQueryDispatcher dispatcher, [FromQuery] int id, CancellationToken cancellationToken) =>
 {
     var query = new GetEmployeeByIdQuery(id);
-    var employee = await dispatcher.Execute<GetEmployeeByIdQuery, ReadEmployeeDTO>(query, cancellationToken);
+    var response = await dispatcher.Execute<GetEmployeeByIdQuery, ReadEmployeeDTO>(query, cancellationToken);
 
-    return Results.Ok(employee);
+    return Results.Ok(response);
 }).WithName("GetEmployeeById");
 
 app.MapPost("/api/employee", async (ICommandDispatcher dispatcher, [FromBody] CreateOrUpdateEmployeeDTO model) =>
