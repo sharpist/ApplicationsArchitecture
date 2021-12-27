@@ -33,7 +33,7 @@ public static class ServiceExtensions
                 .Where(t => t.IsClass && !t.IsAbstract && t.AsType().ImplementsGenericInterface(openType))))
             {
                 Array.ForEach(implementationType.ImplementedInterfaces.ToArray(), @interface =>
-                    services.TryAdd(new ServiceDescriptor(@interface, implementationType, lifetime)));
+                    services.TryAdd(new ServiceDescriptor(@interface, implementationType.AsType(), lifetime)));
             }
         }
 
