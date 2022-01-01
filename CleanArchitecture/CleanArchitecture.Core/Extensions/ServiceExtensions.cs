@@ -4,7 +4,9 @@ public static class ServiceExtensions
 {
     public static IServiceCollection AddCore(this IServiceCollection services)
     {
-        return services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        return services
+            .AddAutoMapper(Assembly.GetExecutingAssembly())
+            .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
     public static IServiceCollection AddCQRS(this IServiceCollection services)
