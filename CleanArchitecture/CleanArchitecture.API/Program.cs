@@ -18,6 +18,14 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 app.UseHttpsRedirection();
 
 // HTTP verbs
+app.MapPost("/api/employee", async (ICommandDispatcher dispatcher, [FromBody] CreateEmployeeDTO model, CancellationToken cancellationToken) =>
+{
+    var command = new PostEmployeeCommand(model);
+    await dispatcher.Execute(command, cancellationToken);
+
+    return Results.Ok();
+}).WithName("PostEmployee");
+
 app.MapGet("/api/employee", async (IQueryDispatcher dispatcher, CancellationToken cancellationToken) =>
 {
     var query = new GetEmployeesQuery();
@@ -34,12 +42,20 @@ app.MapGet("/api/employee/{id}", async (IQueryDispatcher dispatcher, [FromQuery]
     return Results.Ok(response);
 }).WithName("GetEmployeeById");
 
-app.MapPost("/api/employee", async (ICommandDispatcher dispatcher, [FromBody] CreateOrUpdateEmployeeDTO model) =>
+app.MapPut("/api/employee", async (ICommandDispatcher dispatcher, [FromBody] UpdateEmployeeDTO model, CancellationToken cancellationToken) =>
 {
-    var command = new PostEmployeeCommand(model);
-    await dispatcher.Execute(command);
+    var command = new PutEmployeeCommand(model);
+    await dispatcher.Execute(command, cancellationToken);
 
     return Results.Ok();
-}).WithName("PostEmployee");
+}).WithName("PutEmployee");
+
+app.MapDelete("/api/employee/{id}", async (ICommandDispatcher dispatcher, [FromQuery] int id, CancellationToken cancellationToken) =>
+{
+    var command = new DeleteEmployeeCommand(id);
+    await dispatcher.Execute(command, cancellationToken);
+
+    return Results.Ok();
+}).WithName("DeleteEmployee");
 
 await app.RunAsync();

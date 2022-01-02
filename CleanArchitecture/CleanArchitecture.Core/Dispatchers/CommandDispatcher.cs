@@ -9,7 +9,7 @@ public class CommandDispatcher : ICommandDispatcher
         this.provider = provider;
     }
 
-    public async Task Execute<TCommand>(TCommand command) where TCommand : ICommand
+    public async Task Execute<TCommand>(TCommand command, CancellationToken cancellationToken = default) where TCommand : ICommand
     {
         if (command is null) throw new ArgumentNullException(nameof(command));
 
@@ -18,6 +18,6 @@ public class CommandDispatcher : ICommandDispatcher
 
         if (handler is null) throw new CommandHandlerNotFoundException($"Command handler not found, commandType:{typeof(TCommand).Name}.");
 
-        await handler.Execute(command);
+        await handler.Execute(command, cancellationToken);
     }
 }

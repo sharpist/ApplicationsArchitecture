@@ -1,13 +1,15 @@
 ﻿namespace CleanArchitecture.Core.Validators;
 
-public class CreateOrUpdateEmployeeDTOValidator : AbstractValidator<CreateOrUpdateEmployeeDTO>
+public class CreateEmployeeValidator : AbstractValidator<CreateEmployeeDTO>
 {
-    public CreateOrUpdateEmployeeDTOValidator()
+    public CreateEmployeeValidator()
     {
         RuleFor(model => model.Name)
+            .NotNull()
             .NotEmpty()
             .WithMessage("Name is required");
         RuleFor(model => model.Department)
+            .NotNull()
             .NotEmpty()
             .WithMessage("Department is required");
     }

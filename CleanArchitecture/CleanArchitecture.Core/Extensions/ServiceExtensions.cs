@@ -6,7 +6,13 @@ public static class ServiceExtensions
     {
         return services
             .AddAutoMapper(Assembly.GetExecutingAssembly())
-            .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            .AddFluentValidation(x =>
+            {
+                x.DisableDataAnnotationsValidation = true;
+                x.ImplicitlyValidateChildProperties = true;
+                x.ValidatorFactory = new ValidatorFactory(services.BuildServiceProvider());
+                x.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            }).AddScoped<IValidatorFactory, ValidatorFactory>();
     }
 
     public static IServiceCollection AddCQRS(this IServiceCollection services)

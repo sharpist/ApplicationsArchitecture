@@ -2,5 +2,5 @@
 
 public interface ICommandHandler<in TCommand> where TCommand : ICommand
 {
-    Task Execute(TCommand command);
+    Task Execute(TCommand command, CancellationToken cancellationToken = default(CancellationToken));
 }

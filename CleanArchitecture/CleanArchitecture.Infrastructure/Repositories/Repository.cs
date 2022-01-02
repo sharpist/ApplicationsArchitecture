@@ -8,10 +8,10 @@ public class Repository<T> : IRepository<T> where T : class
     public Repository(DatabaseContext<T> context) =>
         (this.context, this.dbSet) = (context, context.Set<T>());
 
-    public async Task CreateAsync(T entity)
+    public async Task CreateAsync(T entity, CancellationToken cancellationToken = default)
     {
-        await dbSet.AddAsync(entity);
-        await context.SaveChangesAsync();
+        await dbSet.AddAsync(entity, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<IEnumerable<T>> ReadAsync(CancellationToken cancellationToken = default) =>
@@ -20,22 +20,26 @@ public class Repository<T> : IRepository<T> where T : class
     public IQueryable<T> Read(Expression<Func<T, bool>> predicate) =>
         dbSet.AsNoTracking().Where(predicate);
 
-    public async Task<T?> FindAsync(int id, CancellationToken cancellationToken = default) =>
-        await dbSet.FindAsync(new object[] { id }, cancellationToken);
-
-    public async Task UpdateAsync(T entity)
+    public async Task<T?> FindAsync(int id, CancellationToken cancellationToken = default)
     {
-        context.Entry(entity).State = EntityState.Modified;
-        await context.SaveChangesAsync();
+        var entity = await dbSet.FindAsync(new object[] { id }, cancellationToken);
+        context.Entry(entity!).State = EntityState.Detached;
+        return entity;
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
     {
-        var entity = await FindAsync(id);
+        context.Entry(entity).State = EntityState.Modified;
+        await context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var entity = await FindAsync(id, cancellationToken);
         if (entity is not null)
         {
             dbSet.Remove(entity);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(cancellationToken);
         }
     }
 

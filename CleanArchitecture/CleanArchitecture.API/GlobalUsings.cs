@@ -4,4 +4,5 @@ global using CleanArchitecture.Core.Handlers.Commands;
 global using CleanArchitecture.Core.Handlers.Queries;
 global using CleanArchitecture.Domain.DTO;
 global using CleanArchitecture.Infrastructure.Extensions;
+global using FluentValidation;
 global using Microsoft.AspNetCore.Mvc;
