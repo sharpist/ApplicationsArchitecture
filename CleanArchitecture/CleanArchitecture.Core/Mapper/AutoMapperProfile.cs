@@ -39,8 +39,8 @@ public class AutoMapperProfile : Profile
                 dest => dest.Department,
                 opt => opt.MapFrom(src => src.Department))
             .ForMember(
-                dest => dest.Created,
-                opt => opt.MapFrom(src => src.Created))
+                dest => dest.Modified,
+                opt => opt.MapFrom(src => src.Modified))
             .ReverseMap();
     }
 }

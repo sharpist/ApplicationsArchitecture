@@ -13,7 +13,7 @@ public class DatabaseContext<T> : DbContext where T : class
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
     {
-        foreach (var item in ChangeTracker.Entries<BaseEntity>().AsEnumerable())
+        foreach (var item in ChangeTracker.Entries<AuditableEntity>().AsEnumerable())
         {
             if (item.State == EntityState.Added)
             {
@@ -21,6 +21,7 @@ public class DatabaseContext<T> : DbContext where T : class
             }
             else if (item.State == EntityState.Modified)
             {
+                item.Entity.Modified = DateTime.UtcNow;
             }
         }
 

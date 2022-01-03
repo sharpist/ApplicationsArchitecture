@@ -17,9 +17,9 @@ public class UpdateEmployeeValidator : AbstractValidator<UpdateEmployeeDTO>
             .NotNull()
             .NotEmpty()
             .WithMessage("Department is required");
-        RuleFor(model => model.Created)
+        RuleFor(model => model.Modified)
             .NotNull()
             .NotEmpty()
-            .WithMessage("Time stamp is required");
+            .WithMessage("Modification time is required");
     }
 }
