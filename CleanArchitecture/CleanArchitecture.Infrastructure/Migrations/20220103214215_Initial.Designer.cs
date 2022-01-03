@@ -3,14 +3,14 @@
 namespace CleanArchitecture.Infrastructure.Migrations;
 
 [DbContext(typeof(DatabaseContext<Employee>))]
-[Migration("20211212114644_Initial")]
+[Migration("20220103214215_Initial")]
 partial class Initial
 {
     protected override void BuildTargetModel(ModelBuilder modelBuilder)
     {
 #pragma warning disable 612, 618
         modelBuilder
-            .HasAnnotation("ProductVersion", "6.0.0")
+            .HasAnnotation("ProductVersion", "6.0.1")
             .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
         SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -28,6 +28,9 @@ partial class Initial
 
             b.Property<string>("Department")
                 .HasColumnType("nvarchar(max)");
+
+            b.Property<DateTime?>("Modified")
+                .HasColumnType("datetime2");
 
             b.Property<string>("Name")
                 .HasColumnType("nvarchar(max)");

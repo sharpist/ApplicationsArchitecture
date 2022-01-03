@@ -14,7 +14,8 @@ public partial class Initial : Migration
                     .Annotation("SqlServer:Identity", "1, 1"),
                 Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 Department = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                Created = table.Column<DateTime>(type: "datetime2", nullable: false)
+                Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
             },
             constraints: table =>
             {
