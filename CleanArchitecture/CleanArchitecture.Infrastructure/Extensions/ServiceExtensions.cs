@@ -8,6 +8,7 @@ public static class ServiceExtensions
         {
             options.UseSqlServer(configuration.GetConnectionString("EmployeeDbConnection"), options =>
             {
+                options.EnableRetryOnFailure(3, TimeSpan.FromSeconds(3), null);
                 options.MigrationsAssembly(typeof(DatabaseContext<>).Assembly.FullName);
             });
         });

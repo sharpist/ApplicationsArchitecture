@@ -1,14 +1,13 @@
-#nullable disable
-
-namespace CleanArchitecture.Infrastructure;
+namespace CleanArchitecture.Migrations;
 
 public class DatabaseContext<T> : DbContext where T : class
 {
-    public DbSet<T> Entities { get; set; }
+    public DbSet<T> Entities { get; set; } = null!;
 
     public DatabaseContext(DbContextOptions<DatabaseContext<T>> options) : base(options)
     {
         ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        Database.Migrate();
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
@@ -26,5 +25,21 @@ public class DatabaseContext<T> : DbContext where T : class
         }
 
         return base.SaveChangesAsync(cancellationToken);
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        base.ConfigureConventions(configurationBuilder);
+
+        configurationBuilder.Properties<String>().HaveColumnType("nvarchar(200)");
+        configurationBuilder.Properties<DateTime>().HaveColumnType("datetime2");
+        configurationBuilder.Properties<Decimal>().HavePrecision(8, 2);
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
     }
 }
