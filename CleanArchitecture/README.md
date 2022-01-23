@@ -4,7 +4,7 @@
 
 This sample is a boilerplate template project to demonstrate building ASP.NET Core (.NET 6) Web API following Clean Architecture.
 
-### Demonstration:
+### Onion-architecture scheme:
 
 ![architecture](architecture.jpg)
 
@@ -29,12 +29,16 @@ This sample is a boilerplate template project to demonstrate building ASP.NET Co
 
 ### Features included:
 
-* **CQRS & Mediator** native patterns with commands/queries without MediatR
-* **Fluent validation**
-* **DTO models mapping**
-* **Query caching**
-* **Log**
-* **Exception handling**
+* Minimal-API
+* **CQRS** & **Mediator** native patterns with commands/queries without MediatR or similar libraries with very weak abstraction and limited features like doesn't separate processing pipelines into commands and queries required for specific aspects:
+  * Audit logging for commands only
+  * Caching for queries only
+  * Configuring unit of work to read-only behavior for queries only and, conversely, to write-only behavior for commands only
+* DTO models mapping
+* Fluent validation
+* Caching
+* Logging
+* Exception handling
 
 ### Show your support:
 
