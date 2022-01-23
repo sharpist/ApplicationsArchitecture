@@ -7,13 +7,13 @@ This sample is a boilerplate template project to demonstrate building ASP.NET Co
 ### Onion-architecture scheme:
 
 <div align="center">
-![architecture](architecture.jpg)
+    <img alt="architecture" title="Onion-architecture scheme" width="480em" height="480em" src="/architecture.jpg" />
 </div>
 
 ### Solution structure:
 
 <div align="center">
-![structure](structure.jpg)
+    <img alt="structure" title="Solution structure" width="480em" height="480em" src="/structure.jpg" />
 </div>
 
 ### Built with:
