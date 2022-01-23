@@ -7,13 +7,13 @@ This sample is a boilerplate template project to demonstrate building ASP.NET Co
 ### Onion-architecture scheme:
 
 <div align="center">
-    <img alt="architecture" title="Onion-architecture scheme" width="480em" height="480em" src="https://github.com/sharpist/ApplicationsArchitecture/raw/master/CleanArchitecture/architecture.jpg" />
+    <img alt="architecture" title="Onion-architecture scheme" width="450em" height="auto" src="https://github.com/sharpist/ApplicationsArchitecture/raw/master/CleanArchitecture/architecture.jpg" />
 </div>
 
 ### Solution structure:
 
 <div align="center">
-    <img alt="structure" title="Solution structure" width="480em" height="480em" src="https://github.com/sharpist/ApplicationsArchitecture/raw/master/CleanArchitecture/structure.jpg" />
+    <img alt="structure" title="Solution structure" width="450em" height="auto" src="https://github.com/sharpist/ApplicationsArchitecture/raw/master/CleanArchitecture/structure.jpg" />
 </div>
 
 ### Built with:
