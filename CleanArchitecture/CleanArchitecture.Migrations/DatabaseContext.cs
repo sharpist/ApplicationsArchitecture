@@ -7,6 +7,7 @@ public class DatabaseContext<T> : DbContext where T : class
     public DatabaseContext(DbContextOptions<DatabaseContext<T>> options) : base(options)
     {
         ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
         Database.Migrate();
     }
 
