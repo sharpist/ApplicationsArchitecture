@@ -16,6 +16,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 }
 
 app.UseHttpsRedirection();
+Middlewares(app, app.Environment);
 
 // HTTP verbs
 app.MapPost("/api/employee", async (ICommandDispatcher dispatcher, [FromBody] CreateEmployeeDTO model, CancellationToken cancellationToken) =>
@@ -59,3 +60,8 @@ app.MapDelete("/api/employee/{id}", async (ICommandDispatcher dispatcher, [FromQ
 }).WithName("DeleteEmployee");
 
 await app.RunAsync();
+
+void Middlewares(IApplicationBuilder app, IWebHostEnvironment env)
+{
+    app.ConfigureExceptionHandler(env);
+}
