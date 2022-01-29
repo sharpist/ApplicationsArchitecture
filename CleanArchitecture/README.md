@@ -1,8 +1,26 @@
-# Sample Solution with Clean Architecture
+# Sample Solution with **Clean Architecture**
 
 ### About project:
 
-This sample is a boilerplate template project to demonstrate building ASP.NET Core (.NET 6) Web API following Clean Architecture.
+This sample is a boilerplate template project to demonstrate building ASP.NET Core (.NET 6) Web API following **Clean Architecture**.
+Typical architectural disadvantages of classical development approaches are cancelled by the **Dependency Inversion** principle as Clean Architecture fundamental requirement.
+
+>My presentation presents the best structured sample implemented with a minimum of external dependencies.
+
+### What does the Solution offer?
+
+The Solution is built keeping in mind the most fundamental blocks an API must have in order to build a scalable and near-perfect API component. The solution offers a complete implementation of the following:
+
+- [x] Clean Architecture with separated layers for API, Core, Domain, Infrastructure and Migrations
+- [x] Generic Repository
+- [x] Entity Framework Core migrations with SQL Server
+- [x] Complete CRUD for an Entity following CQRS, with segregated Commands and Queries
+- [x] Fluent Validation of input inside the Command classes
+- [x] Preconfigured Swagger UI
+- [x] In-Memory Caching for single Entity via IMemoryCache
+- [x] AutoMapper implementation for Entity-to-DTO conversion
+- [x] ILogger logging implementation
+- [x] Database Seeding with an initial data set added as the application starts
 
 ### Onion-architecture scheme:
 
