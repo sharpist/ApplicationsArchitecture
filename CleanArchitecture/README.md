@@ -51,6 +51,8 @@ The Solution is built keeping in mind the most fundamental blocks an API must ha
  - ASP.NET Core (.NET 6) Web API
  - Entity Framework Core (EF Core 6)
  - SQL Server
+ - AutoMapper
+ - Fluent Validation
 
 ##### Front-end
  - SwaggerUI
