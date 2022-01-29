@@ -36,7 +36,7 @@ The Solution is built keeping in mind the most fundamental blocks an API must ha
   * Audit logging for commands only
   * Caching for queries only
   * Configuring unit of work to read-only behavior for queries only and, conversely, to write-only behavior for commands only
-* Improving **CQRS**:
+* **CQRS** tools:
   * Batch registration in DI container for generic interface implementations
 
 ### Solution structure:
