@@ -3,7 +3,7 @@
 ### About project:
 
 This sample is a boilerplate template project to demonstrate building ASP.NET Core (.NET 6) Web API following **Clean Architecture**.
-Typical architectural disadvantages of classical development approaches are cancelled by the **Dependency Inversion** principle as Clean Architecture fundamental requirement.
+**Clean Architecture** is built around **Dependency Inversion** principle and is projected to address the disadvantages inherited from legacy N-Tier Application architectures.
 
 > My presentation presents the most correct sample, properly structured and with a minimum of external dependencies as possible.
 
