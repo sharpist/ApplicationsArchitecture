@@ -8,12 +8,14 @@ public class EmployeeCommandHandler :
     private readonly IRepository<Employee> repository;
     private readonly IValidatorFactory validatorFactory;
     private readonly IMapper mapper;
+    private readonly ILogger<EmployeeCommandHandler> logger;
 
-    public EmployeeCommandHandler(IRepository<Employee> repository, IValidatorFactory validatorFactory, IMapper mapper)
+    public EmployeeCommandHandler(IRepository<Employee> repository, IValidatorFactory validatorFactory, IMapper mapper, ILogger<EmployeeCommandHandler> logger)
     {
         this.repository = repository;
         this.validatorFactory = validatorFactory;
         this.mapper = mapper;
+        this.logger = logger;
     }
 
     public async Task Execute(PostEmployeeCommand command, CancellationToken cancellationToken = default)
@@ -22,7 +24,11 @@ public class EmployeeCommandHandler :
 
         var validator = validatorFactory.GetValidator<CreateEmployeeDTO>();
         var result = validator.Validate(model);
-        //logger.LogInformation($"PostEmployee Validation result: {result}");
+
+        if (logger.IsEnabled(LogLevel.Information))
+        {
+            logger.LogInformation("PostEmployee Validation result: {result}", result);
+        }
 
         if (!result.IsValid)
         {
@@ -43,7 +49,11 @@ public class EmployeeCommandHandler :
 
         var validator = validatorFactory.GetValidator<UpdateEmployeeDTO>();
         var result = validator.Validate(model);
-        //logger.LogInformation($"PutEmployee Validation result: {result}");
+
+        if (logger.IsEnabled(LogLevel.Information))
+        {
+            logger.LogInformation("PutEmployee Validation result: {result}", result);
+        }
 
         if (!result.IsValid)
         {
