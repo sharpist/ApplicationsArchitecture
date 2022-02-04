@@ -12,10 +12,10 @@ public class EmployeeCommandHandler :
 
     public EmployeeCommandHandler(IRepository<Employee> repository, IValidatorFactory validatorFactory, IMapper mapper, ILogger<EmployeeCommandHandler> logger)
     {
-        this.repository = repository;
-        this.validatorFactory = validatorFactory;
-        this.mapper = mapper;
-        this.logger = logger;
+        this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        this.validatorFactory = validatorFactory ?? throw new ArgumentNullException(nameof(validatorFactory));
+        this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public async Task Execute(PostEmployeeCommand command, CancellationToken cancellationToken = default)
@@ -23,7 +23,7 @@ public class EmployeeCommandHandler :
         var model = command.Model;
 
         var validator = validatorFactory.GetValidator<CreateEmployeeDTO>();
-        var result = validator.Validate(model);
+        var result = await validator.ValidateAsync(model, cancellationToken);
 
         if (logger.IsEnabled(LogLevel.Information))
         {
@@ -48,7 +48,7 @@ public class EmployeeCommandHandler :
         var model = command.Model;
 
         var validator = validatorFactory.GetValidator<UpdateEmployeeDTO>();
-        var result = validator.Validate(model);
+        var result = await validator.ValidateAsync(model, cancellationToken);
 
         if (logger.IsEnabled(LogLevel.Information))
         {

@@ -9,8 +9,8 @@ public class EmployeeQueryHandler :
 
     public EmployeeQueryHandler(IRepository<Employee> repository, IMapper mapper)
     {
-        this.repository = repository;
-        this.mapper = mapper;
+        this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
     public async Task<IEnumerable<ReadEmployeeDTO>> Execute(GetEmployeesQuery _, CancellationToken cancellationToken = default)
