@@ -1,3 +1,3 @@
 ﻿namespace CleanArchitecture.Core.Handlers.Queries;
 
-public record class GetEmployeeByIdQuery(int Id) : IQuery<ReadEmployeeDTO>;
+public sealed record class GetEmployeeByIdQuery(int Id) : IQuery<ReadEmployeeDTO>;
