@@ -33,14 +33,10 @@ public class Repository<T> : IRepository<T> where T : class
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(T entity, CancellationToken cancellationToken = default)
     {
-        var entity = await FindAsync(id, cancellationToken);
-        if (entity is not null)
-        {
-            dbSet.Remove(entity);
-            await context.SaveChangesAsync(cancellationToken);
-        }
+        dbSet.Remove(entity);
+        await context.SaveChangesAsync(cancellationToken);
     }
 
     public int Count() => dbSet.Count();

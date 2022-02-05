@@ -70,6 +70,26 @@ public class EmployeeCommandHandler :
 
     public async Task Execute(DeleteEmployeeCommand command, CancellationToken cancellationToken = default)
     {
-        await repository.DeleteAsync(command.Id, cancellationToken);
+        var model = command.Model;
+
+        var validator = validatorFactory.GetValidator<DeleteEmployeeDTO>();
+        var result = await validator.ValidateAsync(model, cancellationToken);
+
+        if (logger.IsEnabled(LogLevel.Information))
+        {
+            logger.LogInformation("DeleteEmployee Validation result: {result}", result);
+        }
+
+        if (!result.IsValid)
+        {
+            var errors = result.Errors.Select(x => x.ErrorMessage).ToArray();
+            throw new InvalidRequestBodyException
+            {
+                Errors = errors
+            };
+        }
+
+        var employee = mapper.Map<Employee>(model);
+        await repository.DeleteAsync(employee, cancellationToken);
     }
 }
