@@ -70,10 +70,8 @@ public class EmployeeCommandHandler :
 
     public async Task Execute(DeleteEmployeeCommand command, CancellationToken cancellationToken = default)
     {
-        var model = command.Model;
-
-        var validator = validatorFactory.GetValidator<DeleteEmployeeDTO>();
-        var result = await validator.ValidateAsync(model, cancellationToken);
+        var validator = validatorFactory.GetValidator<DeleteEmployeeCommand>();
+        var result = await validator.ValidateAsync(command, cancellationToken);
 
         if (logger.IsEnabled(LogLevel.Information))
         {
@@ -89,7 +87,6 @@ public class EmployeeCommandHandler :
             };
         }
 
-        var employee = mapper.Map<Employee>(model);
-        await repository.DeleteAsync(employee, cancellationToken);
+        await repository.DeleteAsync(command.Id, cancellationToken);
     }
 }

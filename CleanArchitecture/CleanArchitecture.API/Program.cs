@@ -51,9 +51,9 @@ app.MapPut("/api/employee", async (ICommandDispatcher dispatcher, [FromBody] Upd
     return Results.Ok();
 }).WithName("PutEmployee");
 
-app.MapDelete("/api/employee", async (ICommandDispatcher dispatcher, [FromBody] DeleteEmployeeDTO model, CancellationToken cancellationToken) =>
+app.MapDelete("/api/employee/{id}", async (ICommandDispatcher dispatcher, [FromQuery] int id, CancellationToken cancellationToken) =>
 {
-    var command = new DeleteEmployeeCommand(model);
+    var command = new DeleteEmployeeCommand(id);
     await dispatcher.Execute(command, cancellationToken);
 
     return Results.Ok();

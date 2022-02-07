@@ -42,17 +42,5 @@ public class AutoMapperProfile : Profile
                 dest => dest.Modified,
                 opt => opt.MapFrom(src => src.Modified))
             .ReverseMap();
-
-        CreateMap<Employee, DeleteEmployeeDTO>()
-            .ForMember(
-                dest => dest.Id,
-                opt => opt.MapFrom(src => src.Id))
-            .ForMember(
-                dest => dest.Name,
-                opt => opt.MapFrom(src => src.Name))
-            .ForMember(
-                dest => dest.Department,
-                opt => opt.MapFrom(src => src.Department))
-            .ReverseMap();
     }
 }

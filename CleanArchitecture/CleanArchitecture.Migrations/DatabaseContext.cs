@@ -11,7 +11,7 @@ public class DatabaseContext<T> : DbContext where T : class
         Database.Migrate();
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
     {
         foreach (var item in ChangeTracker.Entries<AuditableEntity>().AsEnumerable())
         {
@@ -25,7 +25,7 @@ public class DatabaseContext<T> : DbContext where T : class
             }
         }
 
-        return base.SaveChangesAsync(cancellationToken);
+        return await base.SaveChangesAsync(cancellationToken);
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
