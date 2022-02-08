@@ -1,8 +1,8 @@
 ﻿namespace CleanArchitecture.Core.Validators;
 
-public class UpdateEmployeeValidator : AbstractValidator<UpdateEmployeeDTO>
+public class PutEmployeeValidator : AbstractValidator<PutEmployeeCommand>
 {
-    public UpdateEmployeeValidator()
+    public PutEmployeeValidator()
     {
         RuleFor(model => model.Id)
             .NotNull()
@@ -17,9 +17,5 @@ public class UpdateEmployeeValidator : AbstractValidator<UpdateEmployeeDTO>
             .NotNull()
             .NotEmpty()
             .WithMessage("Department is required");
-        RuleFor(model => model.Modified)
-            .NotNull()
-            .NotEmpty()
-            .WithMessage("Modification time is required");
     }
 }

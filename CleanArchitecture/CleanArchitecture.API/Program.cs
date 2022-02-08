@@ -15,13 +15,11 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
     app.UseSwagger().UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 Middlewares(app, app.Environment);
 
 // HTTP verbs
-app.MapPost("/api/employee", async (ICommandDispatcher dispatcher, [FromBody] CreateEmployeeDTO model, CancellationToken cancellationToken) =>
+app.MapPost("/api/employee", async (ICommandDispatcher dispatcher, [FromBody] PostEmployeeCommand command, CancellationToken cancellationToken) =>
 {
-    var command = new PostEmployeeCommand(model);
     await dispatcher.Execute(command, cancellationToken);
 
     return Results.Ok();
@@ -30,7 +28,7 @@ app.MapPost("/api/employee", async (ICommandDispatcher dispatcher, [FromBody] Cr
 app.MapGet("/api/employee", async (IQueryDispatcher dispatcher, CancellationToken cancellationToken) =>
 {
     var query = new GetEmployeesQuery();
-    var response = await dispatcher.Execute<GetEmployeesQuery, IEnumerable<ReadEmployeeDTO>>(query, cancellationToken);
+    var response = await dispatcher.Execute<GetEmployeesQuery, IEnumerable<Employee>>(query, cancellationToken);
 
     return Results.Ok(response);
 }).WithName("GetEmployees");
@@ -38,14 +36,13 @@ app.MapGet("/api/employee", async (IQueryDispatcher dispatcher, CancellationToke
 app.MapGet("/api/employee/{id}", async (IQueryDispatcher dispatcher, [FromQuery] int id, CancellationToken cancellationToken) =>
 {
     var query = new GetEmployeeByIdQuery(id);
-    var response = await dispatcher.Execute<GetEmployeeByIdQuery, ReadEmployeeDTO>(query, cancellationToken);
+    var response = await dispatcher.Execute<GetEmployeeByIdQuery, Employee>(query, cancellationToken);
 
     return Results.Ok(response);
 }).WithName("GetEmployeeById");
 
-app.MapPut("/api/employee", async (ICommandDispatcher dispatcher, [FromBody] UpdateEmployeeDTO model, CancellationToken cancellationToken) =>
+app.MapPut("/api/employee", async (ICommandDispatcher dispatcher, [FromBody] PutEmployeeCommand command, CancellationToken cancellationToken) =>
 {
-    var command = new PutEmployeeCommand(model);
     await dispatcher.Execute(command, cancellationToken);
 
     return Results.Ok();
@@ -63,5 +60,6 @@ await app.RunAsync();
 
 void Middlewares(IApplicationBuilder app, IWebHostEnvironment env)
 {
+    app.UseHttpsRedirection();
     app.ConfigureExceptionHandler(env);
 }

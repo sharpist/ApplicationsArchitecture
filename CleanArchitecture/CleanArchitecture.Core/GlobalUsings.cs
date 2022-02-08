@@ -1,10 +1,10 @@
 ﻿global using AutoMapper;
 global using CleanArchitecture.Core.Dispatchers;
+global using CleanArchitecture.Core.Features;
+global using CleanArchitecture.Core.Features.Employees.Commands;
+global using CleanArchitecture.Core.Features.Employees.Queries;
 global using CleanArchitecture.Core.Handlers;
-global using CleanArchitecture.Core.Handlers.Commands;
-global using CleanArchitecture.Core.Handlers.Queries;
 global using CleanArchitecture.Core.Validators;
-global using CleanArchitecture.Domain.DTO;
 global using CleanArchitecture.Domain.Entities;
 global using CleanArchitecture.Domain.Exceptions;
 global using CleanArchitecture.Domain.Repositories;

@@ -1,8 +1,8 @@
 ﻿namespace CleanArchitecture.Core.Validators;
 
-public class CreateEmployeeValidator : AbstractValidator<CreateEmployeeDTO>
+public class PostEmployeeValidator : AbstractValidator<PostEmployeeCommand>
 {
-    public CreateEmployeeValidator()
+    public PostEmployeeValidator()
     {
         RuleFor(model => model.Name)
             .NotNull()
