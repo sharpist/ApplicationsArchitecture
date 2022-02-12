@@ -1,14 +1,14 @@
 ﻿namespace CleanArchitecture.Core.Validators;
 
-public class PostEmployeeValidator : AbstractValidator<PostEmployeeCommand>
+public class CreateEmployeeValidator : AbstractValidator<CreateEmployeeCommand>
 {
-    public PostEmployeeValidator()
+    public CreateEmployeeValidator()
     {
-        RuleFor(model => model.Name)
+        RuleFor(model => model.Model.Name)
             .NotNull()
             .NotEmpty()
             .WithMessage("Name is required");
-        RuleFor(model => model.Department)
+        RuleFor(model => model.Model.Department)
             .NotNull()
             .NotEmpty()
             .WithMessage("Department is required");

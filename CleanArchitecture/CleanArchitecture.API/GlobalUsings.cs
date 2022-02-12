@@ -3,6 +3,7 @@ global using CleanArchitecture.Core.Extensions;
 global using CleanArchitecture.Core.Features.Employees.Commands;
 global using CleanArchitecture.Core.Features.Employees.Queries;
 global using CleanArchitecture.Core.Middlewares;
+global using CleanArchitecture.Domain.DTO;
 global using CleanArchitecture.Domain.Entities;
 global using CleanArchitecture.Infrastructure.Extensions;
 global using FluentValidation;

@@ -18,35 +18,37 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 Middlewares(app, app.Environment);
 
 // HTTP verbs
-app.MapPost("/api/employee", async (ICommandDispatcher dispatcher, [FromBody] PostEmployeeCommand command, CancellationToken cancellationToken) =>
+app.MapPost("/api/employee", async (ICommandDispatcher dispatcher, [FromBody] CreateEmployeeDTO model, CancellationToken cancellationToken) =>
 {
+    var command = new CreateEmployeeCommand(model);
     await dispatcher.Execute(command, cancellationToken);
 
     return Results.Ok();
-}).WithName("PostEmployee");
+}).WithName("CreateEmployee");
 
 app.MapGet("/api/employee", async (IQueryDispatcher dispatcher, CancellationToken cancellationToken) =>
 {
-    var query = new GetEmployeesQuery();
-    var response = await dispatcher.Execute<GetEmployeesQuery, IEnumerable<Employee>>(query, cancellationToken);
+    var query = new ReadEmployeesQuery();
+    var response = await dispatcher.Execute<ReadEmployeesQuery, IEnumerable<EmployeeDTO>>(query, cancellationToken);
 
     return Results.Ok(response);
-}).WithName("GetEmployees");
+}).WithName("ReadEmployees");
 
 app.MapGet("/api/employee/{id}", async (IQueryDispatcher dispatcher, [FromQuery] int id, CancellationToken cancellationToken) =>
 {
-    var query = new GetEmployeeByIdQuery(id);
-    var response = await dispatcher.Execute<GetEmployeeByIdQuery, Employee>(query, cancellationToken);
+    var query = new ReadEmployeeByIdQuery(id);
+    var response = await dispatcher.Execute<ReadEmployeeByIdQuery, EmployeeDTO>(query, cancellationToken);
 
     return Results.Ok(response);
-}).WithName("GetEmployeeById");
+}).WithName("ReadEmployeeById");
 
-app.MapPut("/api/employee", async (ICommandDispatcher dispatcher, [FromBody] PutEmployeeCommand command, CancellationToken cancellationToken) =>
+app.MapPut("/api/employee", async (ICommandDispatcher dispatcher, [FromBody] UpdateEmployeeDTO model, CancellationToken cancellationToken) =>
 {
+    var command = new UpdateEmployeeCommand(model);
     await dispatcher.Execute(command, cancellationToken);
 
     return Results.Ok();
-}).WithName("PutEmployee");
+}).WithName("UpdateEmployee");
 
 app.MapDelete("/api/employee/{id}", async (ICommandDispatcher dispatcher, [FromQuery] int id, CancellationToken cancellationToken) =>
 {

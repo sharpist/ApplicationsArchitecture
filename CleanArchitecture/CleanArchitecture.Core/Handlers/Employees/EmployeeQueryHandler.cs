@@ -1,23 +1,27 @@
 ﻿namespace CleanArchitecture.Core.Handlers.Employees;
 
 public class EmployeeQueryHandler :
-    IQueryHandler<GetEmployeesQuery, IEnumerable<Employee>>,
-    IQueryHandler<GetEmployeeByIdQuery, Employee>
+    IQueryHandler<ReadEmployeesQuery, IEnumerable<EmployeeDTO>>,
+    IQueryHandler<ReadEmployeeByIdQuery, EmployeeDTO>
 {
     private readonly IRepository<Employee> repository;
+    private readonly IMapper mapper;
 
-    public EmployeeQueryHandler(IRepository<Employee> repository)
+    public EmployeeQueryHandler(IRepository<Employee> repository, IMapper mapper)
     {
         this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
-    public async Task<IEnumerable<Employee>> Execute(GetEmployeesQuery _, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<EmployeeDTO>> Execute(ReadEmployeesQuery _, CancellationToken cancellationToken = default)
     {
-        return await repository.ReadAsync(cancellationToken);
+        var employees = await repository.ReadAsync(cancellationToken);
+        return mapper.Map<EmployeeDTO[]>(employees);
     }
 
-    public async Task<Employee> Execute(GetEmployeeByIdQuery query, CancellationToken cancellationToken = default)
+    public async Task<EmployeeDTO> Execute(ReadEmployeeByIdQuery query, CancellationToken cancellationToken = default)
     {
-        return await repository.FindAsync(query.Id, cancellationToken);
+        var employee = await repository.FindAsync(query.Id, cancellationToken);
+        return mapper.Map<EmployeeDTO>(employee);
     }
 }

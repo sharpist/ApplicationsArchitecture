@@ -1,8 +1,8 @@
 ﻿namespace CleanArchitecture.Core.Handlers.Employees;
 
 public class EmployeeCommandHandler :
-    ICommandHandler<PostEmployeeCommand>,
-    ICommandHandler<PutEmployeeCommand>,
+    ICommandHandler<CreateEmployeeCommand>,
+    ICommandHandler<UpdateEmployeeCommand>,
     ICommandHandler<DeleteEmployeeCommand>
 {
     private readonly IRepository<Employee> repository;
@@ -14,15 +14,15 @@ public class EmployeeCommandHandler :
         this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
-    public async Task Execute(PostEmployeeCommand command, CancellationToken cancellationToken = default)
+    public async Task Execute(CreateEmployeeCommand command, CancellationToken cancellationToken = default)
     {
-        var employee = mapper.Map<Employee>(command);
+        var employee = mapper.Map<Employee>(command.Model);
         await repository.CreateAsync(employee, cancellationToken);
     }
 
-    public async Task Execute(PutEmployeeCommand command, CancellationToken cancellationToken = default)
+    public async Task Execute(UpdateEmployeeCommand command, CancellationToken cancellationToken = default)
     {
-        var employee = mapper.Map<Employee>(command);
+        var employee = mapper.Map<Employee>(command.Model);
         await repository.UpdateAsync(employee, cancellationToken);
     }
 

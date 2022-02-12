@@ -10,7 +10,11 @@ public class Repository<T> : IRepository<T> where T : class
 
     public async Task CreateAsync(T entity, CancellationToken cancellationToken = default)
     {
-        await dbSet.AddAsync(entity, cancellationToken);
+        if (context.Entry(entity).State is EntityState.Detached)
+        {
+            dbSet.Attach(entity);
+        }
+        context.Entry(entity).State = EntityState.Added;
         await context.SaveChangesAsync(cancellationToken);
     }
 
@@ -25,7 +29,10 @@ public class Repository<T> : IRepository<T> where T : class
 
     public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
     {
-        dbSet.Attach(entity);
+        if (context.Entry(entity).State is EntityState.Detached)
+        {
+            dbSet.Attach(entity);
+        }
         context.Entry(entity).State = EntityState.Modified;
         await context.SaveChangesAsync(cancellationToken);
     }
@@ -39,7 +46,7 @@ public class Repository<T> : IRepository<T> where T : class
             {
                 dbSet.Attach(entity);
             }
-            dbSet.Remove(entity);
+            context.Entry(entity).State = EntityState.Deleted;
             await context.SaveChangesAsync(cancellationToken);
         }
     }

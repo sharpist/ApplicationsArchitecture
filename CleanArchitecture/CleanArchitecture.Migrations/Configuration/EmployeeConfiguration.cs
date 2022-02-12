@@ -27,8 +27,8 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
 
         builder.Property(e => e.Modified)
             .HasColumnName("Modified")
-            .IsRequired(false)
-            .ValueGeneratedOnUpdate();
+            .IsRequired(false);
+            //.ValueGeneratedOnUpdate();
 
         builder.HasData
         (
