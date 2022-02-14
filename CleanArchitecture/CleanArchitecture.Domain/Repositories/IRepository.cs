@@ -2,11 +2,13 @@
 
 public interface IRepository<T> where T : class
 {
-    Task CreateAsync(T entity, CancellationToken cancellationToken = default(CancellationToken));
-    Task<IEnumerable<T>> ReadAsync(CancellationToken cancellationToken = default(CancellationToken));
-    IQueryable<T> Read(Expression<Func<T, Boolean>> predicate);
-    Task<T?> FindAsync(Int32 id, CancellationToken cancellationToken = default(CancellationToken));
-    Task UpdateAsync(T entity, CancellationToken cancellationToken = default(CancellationToken));
-    Task DeleteAsync(Int32 id, CancellationToken cancellationToken = default(CancellationToken));
-    Boolean TryGetCount(out Int32 count);
+    Task CreateAsync(T entity, CancellationToken cancellationToken = default);
+    Task CreateAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default);
+    IQueryable<T> ReadAll(bool disableTracking = true);
+    IQueryable<T> ReadAll(Expression<Func<T, bool>> predicate, bool disableTracking = true);
+    Task<IList<TResult>> ReadAllAsync<TResult>(Expression<Func<T, TResult>> selector, Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, bool disableTracking = true, bool ignoreQueryFilters = false, CancellationToken cancellationToken = default);
+    ValueTask<T?> FindAsync(int id, CancellationToken cancellationToken = default);
+    Task UpdateAsync(T entity, CancellationToken cancellationToken = default);
+    Task DeleteAsync(int id, CancellationToken cancellationToken = default);
+    bool TryGetCount(out int count);
 }

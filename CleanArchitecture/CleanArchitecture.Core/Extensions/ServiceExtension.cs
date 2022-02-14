@@ -1,6 +1,6 @@
 ﻿namespace CleanArchitecture.Core.Extensions;
 
-public static class ServiceExtensions
+public static class ServiceExtension
 {
     public static IServiceCollection AddCore(this IServiceCollection services)
     {
@@ -29,7 +29,7 @@ public static class ServiceExtensions
         if (assemblies is not null && assemblies.Length is not 0)
         {
             var allTypes = assemblies
-                .Where(a => !a.IsDynamic && a.GetName().Name == typeof(ServiceExtensions).Assembly.GetName().Name)
+                .Where(a => !a.IsDynamic && a.GetName().Name == typeof(ServiceExtension).Assembly.GetName().Name)
                 .Distinct()
                 .SelectMany(a => a.DefinedTypes)
                 .ToArray();

@@ -15,7 +15,7 @@ public class EmployeeQueryHandler :
 
     public async Task<IEnumerable<EmployeeDTO>> Execute(ReadEmployeesQuery _, CancellationToken cancellationToken = default)
     {
-        var employees = await repository.ReadAsync(cancellationToken);
+        var employees = await repository.ReadAllAsync(x => x, cancellationToken: cancellationToken);
         return mapper.Map<EmployeeDTO[]>(employees);
     }
 

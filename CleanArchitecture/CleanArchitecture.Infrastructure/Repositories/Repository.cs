@@ -8,48 +8,69 @@ public class Repository<T> : IRepository<T> where T : class
     public Repository(DatabaseContext<T> context) =>
         (this.context, this.dbSet) = (context, context.Set<T>());
 
-    public async Task CreateAsync(T entity, CancellationToken cancellationToken = default)
+    public virtual async Task CreateAsync(T entity, CancellationToken cancellationToken = default) =>
+        await dbSet.AddAsync(entity, cancellationToken).ConfigureAwait(false);
+
+    public virtual async Task CreateAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default) =>
+        await dbSet.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
+
+    public virtual IQueryable<T> ReadAll(bool disableTracking = true) =>
+        disableTracking
+            ? dbSet.AsNoTracking()
+            : dbSet;
+
+    public virtual IQueryable<T> ReadAll(
+        Expression<Func<T, bool>> predicate, bool disableTracking = true) =>
+        disableTracking
+            ? dbSet.AsNoTracking().Where(predicate)
+            : dbSet.Where(predicate);
+
+    public virtual async Task<IList<TResult>> ReadAllAsync<TResult>(
+        Expression<Func<T, TResult>> selector,
+        Expression<Func<T, bool>>? predicate = null,
+        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+        bool disableTracking = true, bool ignoreQueryFilters = false, CancellationToken cancellationToken = default)
     {
-        if (context.Entry(entity).State is EntityState.Detached)
+        IQueryable<T> query = dbSet;
+
+        if (disableTracking)
         {
-            dbSet.Attach(entity);
+            query = query.AsNoTracking();
         }
-        context.Entry(entity).State = EntityState.Added;
-        await context.SaveChangesAsync(cancellationToken);
+
+        if (predicate is not null)
+        {
+            query = query.Where(predicate);
+        }
+
+        if (ignoreQueryFilters)
+        {
+            query = query.IgnoreQueryFilters();
+        }
+
+        return orderBy is not null
+            ? await orderBy(query).Select(selector).ToListAsync(cancellationToken).ConfigureAwait(false)
+            : await query.Select(selector).ToListAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<IEnumerable<T>> ReadAsync(CancellationToken cancellationToken = default) =>
-        await dbSet.AsNoTracking().ToArrayAsync(cancellationToken);
+    public virtual async ValueTask<T?> FindAsync(int id, CancellationToken cancellationToken = default) =>
+        await dbSet.FindAsync(new object[] { id }, cancellationToken).ConfigureAwait(false);
 
-    public IQueryable<T> Read(Expression<Func<T, bool>> predicate) =>
-        dbSet.AsNoTracking().Where(predicate);
+    public virtual async Task UpdateAsync(T entity, CancellationToken cancellationToken = default) =>
+        dbSet.Update(entity);
 
-    public async Task<T?> FindAsync(int id, CancellationToken cancellationToken = default) =>
-        await dbSet.FindAsync(new object[] { id }, cancellationToken);
-
-    public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
+    public virtual async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
     {
-        if (context.Entry(entity).State is EntityState.Detached)
-        {
-            dbSet.Attach(entity);
-        }
-        context.Entry(entity).State = EntityState.Modified;
-        await context.SaveChangesAsync(cancellationToken);
-    }
-
-    public async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
-    {
-        var entity = await FindAsync(id, cancellationToken);
+        var entity = await FindAsync(id, cancellationToken).ConfigureAwait(false);
         if (entity is not null)
         {
             if (context.Entry(entity).State is EntityState.Detached)
             {
                 dbSet.Attach(entity);
             }
-            context.Entry(entity).State = EntityState.Deleted;
-            await context.SaveChangesAsync(cancellationToken);
+            dbSet.Remove(entity);
         }
     }
 
-    public bool TryGetCount(out int count) => dbSet.TryGetNonEnumeratedCount(out count) ? true : false;
+    public virtual bool TryGetCount(out int count) => dbSet.TryGetNonEnumeratedCount(out count) ? true : false;
 }
