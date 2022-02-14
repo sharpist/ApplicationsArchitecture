@@ -25,7 +25,7 @@ public class Repository<T> : IRepository<T> where T : class
             ? dbSet.AsNoTracking().Where(predicate)
             : dbSet.Where(predicate);
 
-    public virtual async Task<IList<TResult>> ReadAllAsync<TResult>(
+    public virtual async Task<IEnumerable<TResult>> ReadAllAsync<TResult>(
         Expression<Func<T, TResult>> selector,
         Expression<Func<T, bool>>? predicate = null,
         Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
@@ -49,8 +49,8 @@ public class Repository<T> : IRepository<T> where T : class
         }
 
         return orderBy is not null
-            ? await orderBy(query).Select(selector).ToListAsync(cancellationToken).ConfigureAwait(false)
-            : await query.Select(selector).ToListAsync(cancellationToken).ConfigureAwait(false);
+            ? await orderBy(query).Select(selector).ToArrayAsync(cancellationToken).ConfigureAwait(false)
+            : await query.Select(selector).ToArrayAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public virtual async ValueTask<T?> FindAsync(int id, CancellationToken cancellationToken = default) =>
@@ -61,14 +61,27 @@ public class Repository<T> : IRepository<T> where T : class
 
     public virtual async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
     {
-        var entity = await FindAsync(id, cancellationToken).ConfigureAwait(false);
-        if (entity is not null)
+        var typeInfo = typeof(T).GetTypeInfo();
+        var key = context.Model.FindEntityType(typeInfo)?.FindPrimaryKey()?.Properties.FirstOrDefault();
+        if (key is null)
         {
-            if (context.Entry(entity).State is EntityState.Detached)
+            return;
+        }
+
+        var property = typeInfo.GetProperty(key.Name);
+        if (property is not null)
+        {
+            var entity = Activator.CreateInstance<T>();
+            property.SetValue(entity, id);
+            context.Entry(entity).State = EntityState.Deleted;
+        }
+        else
+        {
+            var entity = await FindAsync(id, cancellationToken).ConfigureAwait(false);
+            if (entity is not null)
             {
-                dbSet.Attach(entity);
+                dbSet.Remove(entity);
             }
-            dbSet.Remove(entity);
         }
     }
 
