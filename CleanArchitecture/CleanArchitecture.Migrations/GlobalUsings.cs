@@ -1,6 +1,7 @@
 ﻿global using CleanArchitecture.Domain.Data;
 global using CleanArchitecture.Domain.Entities;
 global using CleanArchitecture.Migrations.Configuration;
+global using CleanArchitecture.Migrations.Data;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Infrastructure;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
