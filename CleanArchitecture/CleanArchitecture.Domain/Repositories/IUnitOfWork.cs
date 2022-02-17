@@ -1,6 +1,6 @@
 ﻿namespace CleanArchitecture.Domain.Repositories;
 
-public interface IUnitOfWork<out TContext> : IUnitOfWork where TContext : DatabaseContext
+public interface IUnitOfWork<out TContext> : IUnitOfWork where TContext : IDatabaseContext
 {
     TContext DbContext { get; }
     ValueTask<int> CommitAsync(params IUnitOfWork[] unitOfWorks);

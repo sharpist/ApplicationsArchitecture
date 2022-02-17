@@ -1,9 +1,7 @@
 namespace CleanArchitecture.Migrations;
 
-public class DatabaseContext : DbContext
+public class DatabaseContext : DbContext, IDatabaseContext
 {
-    //public DbSet<Employee> Entities { get; set; } = null!;
-
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
     {
         ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
