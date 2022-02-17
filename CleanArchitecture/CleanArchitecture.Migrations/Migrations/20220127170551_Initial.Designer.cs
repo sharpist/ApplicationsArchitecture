@@ -1,8 +1,10 @@
 ﻿#nullable disable
 
+using CleanArchitecture.Migrations.Data;
+
 namespace CleanArchitecture.Migrations.Migrations;
 
-[DbContext(typeof(DatabaseContext<Employee>))]
+[DbContext(typeof(DatabaseContext))]
 [Migration("20220127170551_Initial")]
 partial class Initial
 {

@@ -1,8 +1,10 @@
 ﻿#nullable disable
 
+using CleanArchitecture.Migrations.Data;
+
 namespace CleanArchitecture.Migrations.Migrations;
 
-[DbContext(typeof(DatabaseContext<Employee>))]
+[DbContext(typeof(DatabaseContext))]
 partial class DatabaseContextModelSnapshot : ModelSnapshot
 {
     protected override void BuildModel(ModelBuilder modelBuilder)

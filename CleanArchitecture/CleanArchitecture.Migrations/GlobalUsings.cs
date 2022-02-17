@@ -1,4 +1,5 @@
-﻿global using CleanArchitecture.Domain.Entities;
+﻿global using CleanArchitecture.Domain.Data;
+global using CleanArchitecture.Domain.Entities;
 global using CleanArchitecture.Migrations.Configuration;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Infrastructure;

@@ -1,4 +1,4 @@
-namespace CleanArchitecture.Migrations;
+namespace CleanArchitecture.Migrations.Data;
 
 public class DatabaseContext : DbContext, IDatabaseContext
 {

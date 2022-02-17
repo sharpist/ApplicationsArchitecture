@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Core.Handlers.Employees;
+﻿namespace CleanArchitecture.Core.Handlers.Employees.CommandHandlers;
 
 public class EmployeeCommandHandler :
     ICommandHandler<CreateEmployeeCommand>,
