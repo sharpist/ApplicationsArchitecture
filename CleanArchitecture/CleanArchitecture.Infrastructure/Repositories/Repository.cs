@@ -2,10 +2,10 @@
 
 public class Repository<T> : IRepository<T> where T : class
 {
-    private readonly DatabaseContext<T> context;
+    private readonly DatabaseContext context;
     private readonly DbSet<T> dbSet;
 
-    public Repository(DatabaseContext<T> context) =>
+    public Repository(DatabaseContext context) =>
         (this.context, this.dbSet) = (context, context.Set<T>());
 
     public virtual async Task CreateAsync(T entity, CancellationToken cancellationToken = default) =>
