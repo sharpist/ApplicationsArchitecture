@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Core.Handlers.Employees.QueryHandlers;
+﻿namespace CleanArchitecture.Core.Handlers.QueryHandlers.Employees;
 
 public class EmployeeQueryHandler :
     IQueryHandler<ReadEmployeesQuery, IEnumerable<EmployeeDTO>>,

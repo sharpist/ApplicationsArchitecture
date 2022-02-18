@@ -1,3 +1,3 @@
-﻿namespace CleanArchitecture.Core.Features.Employees.Commands;
+﻿namespace CleanArchitecture.Core.Features.Commands.Employees;
 
 public sealed record class UpdateEmployeeCommand(UpdateEmployeeDTO Model) : ICommand;

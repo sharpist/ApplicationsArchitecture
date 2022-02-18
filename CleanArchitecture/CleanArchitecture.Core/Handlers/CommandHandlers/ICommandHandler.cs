@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Core.Handlers;
+﻿namespace CleanArchitecture.Core.Handlers.CommandHandlers;
 
 public interface ICommandHandler<in TCommand> where TCommand : ICommand
 {

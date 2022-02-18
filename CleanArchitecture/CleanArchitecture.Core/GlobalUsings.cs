@@ -1,9 +1,11 @@
 ﻿global using AutoMapper;
 global using CleanArchitecture.Core.Dispatchers;
-global using CleanArchitecture.Core.Features;
-global using CleanArchitecture.Core.Features.Employees.Commands;
-global using CleanArchitecture.Core.Features.Employees.Queries;
-global using CleanArchitecture.Core.Handlers;
+global using CleanArchitecture.Core.Features.Commands;
+global using CleanArchitecture.Core.Features.Commands.Employees;
+global using CleanArchitecture.Core.Features.Queries;
+global using CleanArchitecture.Core.Features.Queries.Employees;
+global using CleanArchitecture.Core.Handlers.CommandHandlers;
+global using CleanArchitecture.Core.Handlers.QueryHandlers;
 global using CleanArchitecture.Core.Validators;
 global using CleanArchitecture.Domain.DTO;
 global using CleanArchitecture.Domain.Entities;

@@ -1,10 +1,9 @@
 ﻿global using CleanArchitecture.Core.Dispatchers;
 global using CleanArchitecture.Core.Extensions;
-global using CleanArchitecture.Core.Features.Employees.Commands;
-global using CleanArchitecture.Core.Features.Employees.Queries;
+global using CleanArchitecture.Core.Features.Commands.Employees;
+global using CleanArchitecture.Core.Features.Queries.Employees;
 global using CleanArchitecture.Core.Middlewares;
 global using CleanArchitecture.Domain.DTO;
-global using CleanArchitecture.Domain.Entities;
 global using CleanArchitecture.Infrastructure.Extensions;
 global using FluentValidation;
 global using Microsoft.AspNetCore.Builder;
