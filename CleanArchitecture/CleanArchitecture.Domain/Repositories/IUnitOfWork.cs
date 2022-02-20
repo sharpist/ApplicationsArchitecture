@@ -6,10 +6,10 @@ public interface IUnitOfWork<out TContext> : IUnitOfWork where TContext : IDatab
     ValueTask<int> CommitAsync(params IUnitOfWork[] unitOfWorks);
 }
 
-public interface IUnitOfWork : IAsyncDisposable
+public interface IUnitOfWork : IDisposable, IAsyncDisposable
 {
     SaveChangesResult LastSaveChangesResult { get; }
     void SetAutoDetectChanges(bool value);
-    IRepository<TEntity> GetRepository<TEntity>(bool hasCustomRepository = false) where TEntity : class;
+    IRepository<TEntity> GetRepository<TEntity>() where TEntity : class;
     ValueTask<int> CommitAsync();
 }

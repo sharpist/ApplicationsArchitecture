@@ -6,6 +6,7 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext 
 
     private bool disposed;
     private Dictionary<Type, Object>? repositories;
+    private IServiceProviderIsService serviceProviderIsService;
 
     #endregion
 
@@ -16,10 +17,11 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext 
 
     #endregion
 
-    public UnitOfWork(TContext context)
+    public UnitOfWork(TContext context, IServiceProviderIsService serviceProviderIsService)
     {
-        DbContext = context ?? throw new ArgumentNullException(nameof(context));
-        LastSaveChangesResult = new SaveChangesResult();
+        this.serviceProviderIsService = serviceProviderIsService ?? throw new ArgumentNullException(nameof(serviceProviderIsService));
+        this.DbContext = context ?? throw new ArgumentNullException(nameof(context));
+        this.LastSaveChangesResult = new SaveChangesResult();
     }
 
     #region methods
@@ -28,11 +30,9 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext 
 
     #endregion
 
-    public IRepository<TEntity> GetRepository<TEntity>(bool hasCustomRepository = false) where TEntity : class
+    public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class
     {
-        repositories ??= new Dictionary<Type, Object>();
-
-        if (hasCustomRepository)
+        if (serviceProviderIsService.IsService(typeof(IRepository<TEntity>)))
         {
             var customRepo = DbContext.GetService<IRepository<TEntity>>();
             if (customRepo is not null)
@@ -41,6 +41,7 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext 
             }
         }
 
+        repositories ??= new();
         var type = typeof(TEntity);
         if (!repositories.ContainsKey(type))
         {
@@ -91,6 +92,25 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext 
     public async ValueTask DisposeAsync()
     {
         await DisposeAsync(true);
+        GC.SuppressFinalize(this);
+    }
+
+    private void Dispose(bool disposing)
+    {
+        if (!this.disposed)
+        {
+            if (disposing)
+            {
+                repositories?.Clear();
+                DbContext.Dispose();
+            }
+        }
+        this.disposed = true;
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
         GC.SuppressFinalize(this);
     }
 }

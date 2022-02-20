@@ -5,29 +5,32 @@ public class EmployeeCommandHandler :
     ICommandHandler<UpdateEmployeeCommand>,
     ICommandHandler<DeleteEmployeeCommand>
 {
-    private readonly IRepository<Employee> repository;
+    private readonly IUnitOfWork unitOfWork;
     private readonly IMapper mapper;
 
-    public EmployeeCommandHandler(IRepository<Employee> repository, IMapper mapper)
+    public EmployeeCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
     public async Task Execute(CreateEmployeeCommand command, CancellationToken cancellationToken = default)
     {
         var employee = mapper.Map<Employee>(command.Model);
-        await repository.CreateAsync(employee, cancellationToken);
+        await unitOfWork.GetRepository<Employee>().CreateAsync(employee, cancellationToken);
+        await unitOfWork.CommitAsync();
     }
 
     public async Task Execute(UpdateEmployeeCommand command, CancellationToken cancellationToken = default)
     {
         var employee = mapper.Map<Employee>(command.Model);
-        await repository.UpdateAsync(employee, cancellationToken);
+        await unitOfWork.GetRepository<Employee>().UpdateAsync(employee, cancellationToken);
+        await unitOfWork.CommitAsync();
     }
 
     public async Task Execute(DeleteEmployeeCommand command, CancellationToken cancellationToken = default)
     {
-        await repository.DeleteAsync(command.Id, cancellationToken);
+        await unitOfWork.GetRepository<Employee>().DeleteAsync(command.Id, cancellationToken);
+        await unitOfWork.CommitAsync();
     }
 }

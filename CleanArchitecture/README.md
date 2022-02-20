@@ -12,7 +12,7 @@ This sample is a boilerplate template project to demonstrate building ASP.NET Co
 The Solution is built keeping in mind the most fundamental blocks an API must have in order to build a scalable and near-perfect API component. The solution offers a complete implementation of the following:
 
 - [x] Clean Architecture with separated layers for API, Core, Domain, Infrastructure and Migrations
-- [x] Generic Repository
+- [x] UnitOfWork with Generic Repository
 - [x] Entity Framework Core migrations with SQL Server
 - [x] Database Seeding with an initial data set added as the application starts
 - [x] Complete CRUD for an Entity following CQRS, with segregated Commands and Queries
