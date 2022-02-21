@@ -1,14 +1,14 @@
 ﻿namespace CleanArchitecture.Domain.Repositories;
 
-public interface IRepository<T> where T : class
+public interface IRepository<TEntity> where TEntity : class
 {
-    Task CreateAsync(T entity, CancellationToken cancellationToken = default);
-    Task CreateAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default);
-    IQueryable<T> ReadAll(bool disableTracking = true);
-    IQueryable<T> ReadAll(Expression<Func<T, bool>> predicate, bool disableTracking = true);
-    Task<IEnumerable<TResult>> ReadAllAsync<TResult>(Expression<Func<T, TResult>> selector, Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, bool disableTracking = true, bool ignoreQueryFilters = false, CancellationToken cancellationToken = default);
-    ValueTask<T?> FindAsync(int id, CancellationToken cancellationToken = default);
-    Task UpdateAsync(T entity, CancellationToken cancellationToken = default);
+    Task CreateAsync(TEntity entity, CancellationToken cancellationToken = default);
+    Task CreateAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
+    IQueryable<TEntity> ReadAll(bool disableTracking = true);
+    IQueryable<TEntity> ReadAll(Expression<Func<TEntity, bool>> predicate, bool disableTracking = true);
+    Task<IEnumerable<TResult>> ReadAllAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, bool disableTracking = true, bool ignoreQueryFilters = false, CancellationToken cancellationToken = default);
+    ValueTask<TEntity?> FindAsync(int id, CancellationToken cancellationToken = default);
+    Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);
     Task DeleteAsync(int id, CancellationToken cancellationToken = default);
     bool TryGetCount(out int count);
 }

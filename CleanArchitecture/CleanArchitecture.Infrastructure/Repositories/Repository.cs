@@ -1,37 +1,37 @@
 ﻿namespace CleanArchitecture.Infrastructure.Repositories;
 
-public class Repository<T> : IRepository<T> where T : class
+public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 {
     private readonly DatabaseContext context;
-    private readonly DbSet<T> dbSet;
+    private readonly DbSet<TEntity> dbSet;
 
     public Repository(DatabaseContext context) =>
-        (this.context, this.dbSet) = (context, context.Set<T>());
+        (this.context, this.dbSet) = (context, context.Set<TEntity>());
 
-    public virtual async Task CreateAsync(T entity, CancellationToken cancellationToken = default) =>
+    public virtual async Task CreateAsync(TEntity entity, CancellationToken cancellationToken = default) =>
         await dbSet.AddAsync(entity, cancellationToken).ConfigureAwait(false);
 
-    public virtual async Task CreateAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default) =>
+    public virtual async Task CreateAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default) =>
         await dbSet.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
 
-    public virtual IQueryable<T> ReadAll(bool disableTracking = true) =>
+    public virtual IQueryable<TEntity> ReadAll(bool disableTracking = true) =>
         disableTracking
             ? dbSet.AsNoTracking()
             : dbSet;
 
-    public virtual IQueryable<T> ReadAll(
-        Expression<Func<T, bool>> predicate, bool disableTracking = true) =>
+    public virtual IQueryable<TEntity> ReadAll(
+        Expression<Func<TEntity, bool>> predicate, bool disableTracking = true) =>
         disableTracking
             ? dbSet.AsNoTracking().Where(predicate)
             : dbSet.Where(predicate);
 
     public virtual async Task<IEnumerable<TResult>> ReadAllAsync<TResult>(
-        Expression<Func<T, TResult>> selector,
-        Expression<Func<T, bool>>? predicate = null,
-        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+        Expression<Func<TEntity, TResult>> selector,
+        Expression<Func<TEntity, bool>>? predicate = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         bool disableTracking = true, bool ignoreQueryFilters = false, CancellationToken cancellationToken = default)
     {
-        IQueryable<T> query = dbSet;
+        IQueryable<TEntity> query = dbSet;
 
         if (disableTracking)
         {
@@ -53,15 +53,15 @@ public class Repository<T> : IRepository<T> where T : class
             : await query.Select(selector).ToArrayAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    public virtual async ValueTask<T?> FindAsync(int id, CancellationToken cancellationToken = default) =>
+    public virtual async ValueTask<TEntity?> FindAsync(int id, CancellationToken cancellationToken = default) =>
         await dbSet.FindAsync(new object[] { id }, cancellationToken).ConfigureAwait(false);
 
-    public virtual async Task UpdateAsync(T entity, CancellationToken cancellationToken = default) =>
+    public virtual async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default) =>
         dbSet.Update(entity);
 
     public virtual async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
     {
-        var typeInfo = typeof(T).GetTypeInfo();
+        var typeInfo = typeof(TEntity).GetTypeInfo();
         var key = context.Model.FindEntityType(typeInfo)?.FindPrimaryKey()?.Properties.FirstOrDefault();
         if (key is null)
         {
@@ -71,7 +71,7 @@ public class Repository<T> : IRepository<T> where T : class
         var property = typeInfo.GetProperty(key.Name);
         if (property is not null)
         {
-            var entity = Activator.CreateInstance<T>();
+            var entity = Activator.CreateInstance<TEntity>();
             property.SetValue(entity, id);
             context.Entry(entity).State = EntityState.Deleted;
         }
