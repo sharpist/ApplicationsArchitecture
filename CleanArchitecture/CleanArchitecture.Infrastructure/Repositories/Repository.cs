@@ -5,8 +5,11 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     private readonly DatabaseContext context;
     private readonly DbSet<TEntity> dbSet;
 
-    public Repository(DatabaseContext context) =>
-        (this.context, this.dbSet) = (context, context.Set<TEntity>());
+    public Repository(DatabaseContext context)
+    {
+        this.context = context ?? throw new ArgumentNullException(nameof(context));
+        this.dbSet = context.Set<TEntity>();
+    }
 
     public virtual async Task CreateAsync(TEntity entity, CancellationToken cancellationToken = default) =>
         await dbSet.AddAsync(entity, cancellationToken).ConfigureAwait(false);
@@ -84,6 +87,13 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
             }
         }
     }
+
+    public virtual async ValueTask<int> CountAsync(
+        Expression<Func<TEntity, bool>>? predicate = null,
+        CancellationToken cancellationToken = default) =>
+        predicate is null
+            ? await dbSet.CountAsync(cancellationToken)
+            : await dbSet.CountAsync(predicate, cancellationToken);
 
     public virtual bool TryGetCount(out int count) => dbSet.TryGetNonEnumeratedCount(out count) ? true : false;
 }
