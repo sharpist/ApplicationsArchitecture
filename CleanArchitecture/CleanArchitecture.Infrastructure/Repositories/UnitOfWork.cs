@@ -1,10 +1,10 @@
 ﻿namespace CleanArchitecture.Infrastructure.Repositories;
 
-public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DatabaseContext
+public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
+    where TContext : DatabaseContext
 {
     #region fields
 
-    private bool disposed;
     private Dictionary<Type, Object>? repositories;
     private IServiceProviderIsService serviceProviderIsService;
 
@@ -76,41 +76,33 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext 
         return count;
     }
 
-    private async ValueTask DisposeAsync(bool disposing)
-    {
-        if (!this.disposed)
-        {
-            if (disposing)
-            {
-                repositories?.Clear();
-                await DbContext.DisposeAsync();
-            }
-        }
-        this.disposed = true;
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        await DisposeAsync(true);
-        GC.SuppressFinalize(this);
-    }
+    #region utilizer
 
     private void Dispose(bool disposing)
     {
-        if (!this.disposed)
+        lock (this)
         {
-            if (disposing)
+            if (!this.disposed)
             {
-                repositories?.Clear();
-                DbContext.Dispose();
+                if (disposing)
+                {
+                    repositories?.Clear();
+                    DbContext?.Dispose();
+                }
             }
+            this.disposed = true;
         }
-        this.disposed = true;
     }
 
     public void Dispose()
     {
-        Dispose(true);
+        this.Dispose(true);
         GC.SuppressFinalize(this);
     }
+
+    ~UnitOfWork() => this.Dispose(false);
+
+    private bool disposed;
+
+    #endregion
 }

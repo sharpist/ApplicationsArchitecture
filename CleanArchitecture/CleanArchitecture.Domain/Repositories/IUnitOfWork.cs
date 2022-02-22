@@ -1,12 +1,13 @@
 ﻿namespace CleanArchitecture.Domain.Repositories;
 
-public interface IUnitOfWork<out TContext> : IUnitOfWork where TContext : IDatabaseContext
+public interface IUnitOfWork<out TContext> : IUnitOfWork
+    where TContext : IDatabaseContext
 {
     TContext DbContext { get; }
     ValueTask<int> CommitAsync(params IUnitOfWork[] unitOfWorks);
 }
 
-public interface IUnitOfWork : IDisposable, IAsyncDisposable
+public interface IUnitOfWork : IDisposable
 {
     SaveChangesResult LastSaveChangesResult { get; }
     void SetAutoDetectChanges(bool value);

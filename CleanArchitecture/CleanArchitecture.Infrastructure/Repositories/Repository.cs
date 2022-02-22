@@ -1,6 +1,7 @@
 ﻿namespace CleanArchitecture.Infrastructure.Repositories;
 
-public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+public class Repository<TEntity> : IRepository<TEntity>
+    where TEntity : class
 {
     private readonly DatabaseContext context;
     private readonly DbSet<TEntity> dbSet;
@@ -96,4 +97,33 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
             : await dbSet.CountAsync(predicate, cancellationToken);
 
     public virtual bool TryGetCount(out int count) => dbSet.TryGetNonEnumeratedCount(out count) ? true : false;
+
+    #region utilizer
+
+    protected virtual void Dispose(bool disposing)
+    {
+        lock (this)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    context?.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+    }
+
+    public void Dispose()
+    {
+        this.Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    ~Repository() => this.Dispose(false);
+
+    private bool disposed;
+
+    #endregion
 }

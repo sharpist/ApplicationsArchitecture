@@ -1,6 +1,7 @@
 ﻿namespace CleanArchitecture.Domain.Repositories;
 
-public interface IRepository<TEntity> where TEntity : class
+public interface IRepository<TEntity> : IDisposable
+    where TEntity : class
 {
     Task CreateAsync(TEntity entity, CancellationToken cancellationToken = default);
     Task CreateAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
