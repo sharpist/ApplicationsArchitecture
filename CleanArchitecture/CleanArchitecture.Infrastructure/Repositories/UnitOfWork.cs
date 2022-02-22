@@ -19,8 +19,8 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
 
     public UnitOfWork(TContext context, IServiceProviderIsService serviceProviderIsService)
     {
-        this.serviceProviderIsService = serviceProviderIsService ?? throw new ArgumentNullException(nameof(serviceProviderIsService));
         this.DbContext = context ?? throw new ArgumentNullException(nameof(context));
+        this.serviceProviderIsService = serviceProviderIsService ?? throw new ArgumentNullException(nameof(serviceProviderIsService));
         this.LastSaveChangesResult = new SaveChangesResult();
     }
 
@@ -76,7 +76,7 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>
         return count;
     }
 
-    #region utilizer
+    #region finalizer
 
     private void Dispose(bool disposing)
     {

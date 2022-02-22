@@ -63,6 +63,9 @@ public class Repository<TEntity> : IRepository<TEntity>
     public virtual async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default) =>
         dbSet.Update(entity);
 
+    public virtual async Task UpdateAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default) =>
+        dbSet.UpdateRange(entities);
+
     public virtual async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
     {
         var typeInfo = typeof(TEntity).GetTypeInfo();
@@ -93,12 +96,12 @@ public class Repository<TEntity> : IRepository<TEntity>
         Expression<Func<TEntity, bool>>? predicate = null,
         CancellationToken cancellationToken = default) =>
         predicate is null
-            ? await dbSet.CountAsync(cancellationToken)
-            : await dbSet.CountAsync(predicate, cancellationToken);
+            ? await dbSet.CountAsync(cancellationToken).ConfigureAwait(false)
+            : await dbSet.CountAsync(predicate, cancellationToken).ConfigureAwait(false);
 
     public virtual bool TryGetCount(out int count) => dbSet.TryGetNonEnumeratedCount(out count) ? true : false;
 
-    #region utilizer
+    #region finalizer
 
     protected virtual void Dispose(bool disposing)
     {
